@@ -1,6 +1,10 @@
 .DS_Store
 node_modules
 /dist
+./onto
+m
+onto
+
 
 # local env files
 .env.local
