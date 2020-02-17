@@ -1,8 +1,12 @@
 <template>
-  <v-app>
-    <AppHeader/>
-    <AppContent/>
+<div id="app">
+  <v-app id="inspire">
+    <v-card class="overflow-hidden">
+      <AppHeader/>
+      <AppContent/>
+    </v-card>
   </v-app>
+</div>
 </template>
 
 <script>

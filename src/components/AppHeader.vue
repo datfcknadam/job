@@ -1,20 +1,17 @@
 ﻿<template>
-  <v-toolbar
+  <v-app-bar
     color="#ececec"
-    dark
   >
-    <v-toolbar-title>
-      <v-img
-        alt="Речной порт"
-        class="shrink mt-1 hidden-sm-and-down"
-        contain
-        min-width="100"
-        src="../assets/logo.png"
-        width="auto"
-      />
-    <p class="header-name">Аренда теплоходов</p>
-    </v-toolbar-title>
-  </v-toolbar>  
+    <v-img
+      alt="Речной порт"
+      class="shrink mt-1 hidden-sm-and-down"
+      contain
+      min-width="100"
+      src="../assets/logo.png"
+      width="auto"
+    />
+    <v-toolbar-title class="header-name" v-text="'Аренда теплоходов'"/>
+  </v-app-bar>  
 </template>
 
 <style scoped>
