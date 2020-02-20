@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <v-app-bar
     color="#ececec"
   >
@@ -10,8 +10,11 @@
       src="../assets/logo.png"
       width="auto"
     />
-    <v-toolbar-title class="header-name" v-text="'Аренда теплоходов'"/>
-  </v-app-bar>  
+    <v-toolbar-title
+      class="header-name"
+      v-text="'Аренда теплоходов'"
+    />
+  </v-app-bar>
 </template>
 
 <style scoped>

@@ -1,4 +1,2 @@
-﻿1. Make annotation.
-2. Galery ships.
-3. Calendary.
-4. 
+﻿1. Increase function data-picker (allowed date -> getResponse events on day, when calendar change);
+2. Will add auth (Manager, Client);
