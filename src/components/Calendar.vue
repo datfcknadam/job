@@ -39,7 +39,7 @@
           locale="ru"
           format="24hr"
           min="8:00"
-          :max="end"
+          max="23:00"
         />
       </v-col>
       <v-col
@@ -54,6 +54,7 @@
           locale="ru"
           format="24hr"
           :min="minTime"
+          :max="'23:00'"
         />
       </v-col>
       <v-btn
@@ -67,10 +68,26 @@
         />
       </v-btn>
     </v-row>
+    <div
+      v-show="currentSet === 2"
+      class="string-date"
+    >
+      <p>
+        Вы забронировали теплоход "{{ ships[chooseShip].name }}"
+        на {{ picker }} ({{ getWeekDay }})
+      </p>
+      <p>С {{ start }} до {{ end }} часов ({{ mathHour }}ч)</p>
+      <p>
+        Аренда теплохода: c ПН-ЧТ = {{ ships[chooseShip].price }}руб.,
+        с ПТ-ВС = {{ ships[chooseShip].price * 1.10 }}руб.
+      </p><p>Стоимость аренды будет: {{ mathRent }}</p>
+    </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   name: 'Calendar',
   data() {
@@ -78,19 +95,53 @@ export default {
       currentSet: 0,
       picker: new Date().toISOString().substr(0, 10),
       start: "08:00",
-      end: "24:00",
+      end: "23:59",
       currentDate: new Date().toISOString().substr(0, 10),
     };
   },
   computed: {
+    ...mapState(['chooseShip', 'ships']),
+    mathRent() {
+      let price = 0;
+      let weekend = this.getWeekDay === 'ПТ' ||
+        this.getWeekDay === 'СБ'
+        || this.getWeekDay === 'ВС';
+      if (weekend) {
+        price = this.ships[this.chooseShip].price * 1.10;
+      } else {
+        price = this.ships[this.chooseShip].price;
+      }
+
+      let sumRent = price * this.mathHour;
+      return `${price}руб * ${this.mathHour}ч = ${sumRent}руб`;
+    },
     minTime() {
-      return this.addHours(this.start);
+      if (this.start === "23:00") {
+        return "23:59";
+      }
+      return this.addHour(this.start);
+    },
+    getWeekDay() {
+      let transformDate = new Date(this.picker);
+      let days = ['ВС', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'];
+      return days[transformDate.getDay()];
+    },
+    mathHour() {
+      let splitStart = this.start.split(":");
+      let splitEnd = this.end.split(":");
+      let hourStart = parseInt(splitStart[0], 10);
+      let hourEnd = parseInt(splitEnd[0], 10);
+
+      return (hourEnd - hourStart).toString();
     },
   },
   methods: {
-    addHours(h) {
-      this.setHours(this.getHours() + h);
-      return this;
+    addHour(h) {
+      let date = new Date()
+      let splitH = h.split(":");
+      let hour = parseInt(splitH[0], 10);
+      date.setHours(hour + 1);
+      return `${date.getHours().toString()}:${splitH[1]}`;
     },
   },
 };
@@ -102,4 +153,7 @@ export default {
   justify-content: center
   h2
     margin-bottom: 20px
+  .string-date
+    position: absolute
+    right: 10vw
 </style>
