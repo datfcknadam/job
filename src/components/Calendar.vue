@@ -78,9 +78,11 @@
       </p>
       <p>С {{ start }} до {{ end }} часов ({{ mathHour }}ч)</p>
       <p>
-        Аренда теплохода: c ПН-ЧТ = {{ ships[chooseShip].price }}руб.,
-        с ПТ-ВС = {{ ships[chooseShip].price * 1.10 }}руб.
-      </p><p>Стоимость аренды будет: {{ mathRent }}</p>
+        Аренда теплохода: c ПН-ЧТ = {{ ships[chooseShip].price }}руб/час (более 3-х часов {{ (ships[chooseShip].price * 0.7).toFixed() }}руб/час),<br>
+        с ПТ-ВС = {{ (ships[chooseShip].price * 1.1).toFixed() }}руб/час.
+        (более 3-х часов {{ (ships[chooseShip].price * 0.7 * 1.1).toFixed() }}руб/час)
+      </p>
+      <p>Стоимость аренды будет: {{ mathRent }}</p>
     </div>
   </div>
 </template>
@@ -102,17 +104,18 @@ export default {
   computed: {
     ...mapState(['chooseShip', 'ships']),
     mathRent() {
-      let price = 0;
+      let disExCharge;
+      let exChargeWeek;
       let weekend = this.getWeekDay === 'ПТ' ||
         this.getWeekDay === 'СБ'
         || this.getWeekDay === 'ВС';
-      if (weekend) {
-        price = this.ships[this.chooseShip].price * 1.10;
-      } else {
-        price = this.ships[this.chooseShip].price;
-      }
 
+      this.mathHour >= 3 ? disExCharge = 0.7 : disExCharge = 1;
+      weekend ? exChargeWeek = 1.1 : exChargeWeek = 1;
+
+      let price = (this.ships[this.chooseShip].price * exChargeWeek * disExCharge).toFixed();
       let sumRent = price * this.mathHour;
+
       return `${price}руб * ${this.mathHour}ч = ${sumRent}руб`;
     },
     minTime() {
