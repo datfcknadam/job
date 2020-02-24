@@ -1,7 +1,11 @@
 <template>
   <v-content>
     <v-card class="body-content">
-      <v-card-title>1. Выберите теплоход</v-card-title>
+      <v-card-title>
+        <div class="title-text">
+          1. Выберите теплоход
+        </div>
+      </v-card-title>
       <v-card-text class="d-flex flex-column">
         <div class="carousel-ship">
           <div
@@ -10,6 +14,7 @@
           />
           <v-carousel
             :value="chooseShip"
+            hide-delimiters
             @change="CHANGE_CHOOSE_SHIP"
           >
             <v-carousel-item
@@ -58,8 +63,35 @@
           </div>
         </div>
       </v-card-text>
-      <v-card-title>2. Выберите дату и время аренды</v-card-title>
-      <calendar />
+      <v-lazy
+        v-model="calendar"
+        :options="{
+          threshold: .5
+        }"
+        min-height="200"
+        transition="fade-transition"
+      >
+        <div>
+          <v-card-title>
+            <div class="title-text">
+              2. Выберите дату и время аренды
+            </div>
+          </v-card-title>
+          <v-card-text>
+            <calendar />
+          </v-card-text>
+        </div>
+      </v-lazy>
+      <div v-show="result">
+        <v-card-title>
+          <div class="title-text">
+            3. Подтвердите аренду
+          </div>
+        </v-card-title>
+        <v-card-text>
+          <verification />
+        </v-card-text>
+      </div>
       <div class="footer" />
     </v-card>
   </v-content>
@@ -69,20 +101,24 @@
 import { mapState, mapMutations } from 'vuex';
 import Gallery from '../components/Gallery.vue';
 import Calendar from '../components/Calendar.vue';
+import Verification from '../components/Verification.vue';
 
 export default {
   components: {
     Gallery,
     Calendar,
+    Verification,
   },
   data() {
     return {
       showAnnotation: false,
       showGallery: false,
+      verification: false,
+      calendar: false,
     };
   },
   computed: {
-    ...mapState(['chooseShip', 'ships']),
+    ...mapState(['chooseShip', 'ships', 'result']),
     getShipName() {
       return this.ships[this.chooseShip].name;
     },
@@ -93,8 +129,17 @@ export default {
 };
 </script>
 <style lang="sass">
-.about
-  padding: 0 25px
+.body-content
+  padding: 0 5vw 0 5vw
+  .v-card__text
+    background: aliceblue
+    margin: 0 15px
+  .v-card__title
+    .title-text
+      display: flex
+      flex: 1 1 auto
+.about, .calendar, .verification
+  padding: 0 41px
 .carousel-ship
   padding: 0 41px
 .title-ship
@@ -104,8 +149,6 @@ export default {
   line-height: 2rem
   letter-spacing: normal !important
   font-family: "Roboto", sans-serif !important
-.body-content
-  padding: 0 5vw 0 5vw
 .footer
   height: 50px
 </style>

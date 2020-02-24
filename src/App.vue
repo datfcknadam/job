@@ -21,3 +21,7 @@ export default {
   },
 };
 </script>
+<style lang="sass">
+#app
+  max-width: 100vw
+</style>
