@@ -21,7 +21,7 @@
       >
         <h2>Дата аренды:</h2>
         <v-date-picker
-          v-model="picker"
+          :value="dataRent.date"
           :landscape="$vuetify.breakpoint.smAndUp"
           :min="currentDate"
           locale="ru"
@@ -34,12 +34,13 @@
       >
         <h2>Начало аренды:</h2>
         <v-time-picker
-          v-model="start"
+          :value="dataRent.start"
           :landscape="$vuetify.breakpoint.smAndUp"
           locale="ru"
           format="24hr"
           min="8:00"
           max="23:00"
+          @input="SET_START_RENT"
         />
       </v-col>
       <v-col
@@ -49,12 +50,13 @@
       >
         <h2>Конец аренды:</h2>
         <v-time-picker
-          v-model="end"
+          :value="dataRent.end"
           :landscape="$vuetify.breakpoint.smAndUp"
           locale="ru"
           format="24hr"
           :min="minTime"
           :max="'23:59'"
+          @input="SET_END_RENT"
         />
       </v-col>
       <a
@@ -88,7 +90,7 @@
         на
         <span
           class="value"
-          v-text="picker"
+          v-text="dataRent.date"
         />
         (<span
           class="value"
@@ -98,11 +100,11 @@
       <p>
         С <span
           class="value"
-          v-text="start"
+          v-text="dataRent.start"
         /> до
         <span
           class="value"
-          v-text="end"
+          v-text="dataRent.end"
         /> часов
         (<span
           class="value"
@@ -151,14 +153,11 @@ export default {
   data() {
     return {
       currentSet: 0,
-      picker: new Date().toISOString().substr(0, 10),
-      start: "08:00",
-      end: "09:00",
       currentDate: new Date().toISOString().substr(0, 10),
     };
   },
   computed: {
-    ...mapState(['chooseShip', 'ships', 'result']),
+    ...mapState(['chooseShip', 'ships', 'result', 'dataRent']),
     mathRent() {
       let disExCharge = 0;
       let exChargeWeek = 0;
@@ -171,7 +170,7 @@ export default {
       weekend ? exChargeWeek = 1.1 : exChargeWeek = 1;
 
       let price  = (this.ships[this.chooseShip].price * exChargeWeek);
-      console.log(price);
+
       for (let i = 0; i < this.mathHour; i++) {
         if (i < 3) {
           sumRent = sumRent + price;
@@ -179,6 +178,9 @@ export default {
           sumRent = sumRent + (price * disExCharge);
         }
       }
+
+      this.SET_SUM_RENT(sumRent);
+
       if (this.mathHour > 3) {
         return `${price.toFixed()}руб x 3ч + ${(price * disExCharge).toFixed()}руб x ${this.mathHour - 3}ч  = ${sumRent.toFixed()}`;
       }
@@ -187,19 +189,19 @@ export default {
       }
     },
     minTime() {
-      if (this.start === "23:00") {
+      if (this.dataRent.start === "23:00") {
         return "23:59";
       }
-      return this.addHour(this.start);
+      return this.addHour(this.dataRent.start);
     },
     getWeekDay() {
-      let transformDate = new Date(this.picker);
+      let transformDate = new Date(this.dataRent.date);
       let days = ['ВС', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'];
       return days[transformDate.getDay()];
     },
     mathHour() {
-      let splitStart = this.start.split(":");
-      let splitEnd = this.end.split(":");
+      let splitStart = this.dataRent.start.split(":");
+      let splitEnd = this.dataRent.end.split(":");
       let hourStart = parseInt(splitStart[0], 10);
       let hourEnd = parseInt(splitEnd[0], 10);
 
@@ -208,15 +210,15 @@ export default {
   },
   watch: {
     start() {
-      if (this.start === "23:00") {
-        this.end = "23:59";
+      if (this.dataRent.start === "23:00") {
+        this.dataRent.end = "23:59";
       } else {
-        this.end = this.addHour(this.start);
+        this.dataRent.end = this.addHour(this.dataRent.start);
       }
     },
   },
   methods: {
-    ...mapMutations(['CHANGE_RESULT']),
+    ...mapMutations(['CHANGE_RESULT', 'SET_START_RENT', 'SET_END_RENT', 'SET_SUM_RENT', 'SET_DATE_RENT']),
     addHour(h) {
       let date = new Date()
       let splitH = h.split(":");

@@ -30,4 +30,12 @@ export default {
     },
   ],
   result: false,
+  dataRent: {
+    userEmail: '',
+    date: new Date().toISOString().substr(0, 10),
+    start: '08:00',
+    sum: '',
+    end: '09:00',
+    sheep: '',
+  },
 };

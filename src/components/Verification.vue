@@ -2,23 +2,40 @@
   <div class="verification">
     <v-col cols="2">
       <v-row>
-        <v-text-field
-          label="Почта"
-          type="email"
-          placeholder="example@gmail.com"
-          outlined
-          :rules="[rules.required, rules.email]"
-        />
+        <v-form
+          ref="form"
+          v-model="valid"
+          lazy-validation
+        >
+          <v-text-field
+            label="Почта"
+            type="email"
+            placeholder="example@gmail.com"
+            outlined
+            required
+            :rules="[rules.required, rules.email]"
+            @input="SET_EMAIL"
+          />
+          <v-btn
+            text
+            :disabled="!valid"
+            @click="validate"
+          >
+            Отправить
+          </v-btn>
+        </v-form>
       </v-row>
     </v-col>
   </div>
 </template>
 
 <script>
+import { mapMutations, mapState } from 'vuex';
 export default {
   name: 'Verification',
   data() {
     return {
+      valid: true,
       rules: {
         required: value => !!value || 'Обязательное поле.',
         email: value => {
@@ -27,6 +44,17 @@ export default {
         },
       },
     };
+  },
+  computed: {
+    ...mapState(['dataRent']),
+  },
+  methods: {
+    ...mapMutations(['SET_EMAIL']),
+    validate () {
+      if (this.$refs.form.validate()) {
+        this.$store.dispatch('sendDataRent');
+      }
+    },
   },
 };
 </script>
