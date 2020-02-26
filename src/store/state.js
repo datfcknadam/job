@@ -2,6 +2,7 @@ export default {
   urlBackend: 'http://localhost:3000/api/v1/',
   status: 0,
   chooseShip: 0,
+  code: 0,
   ships: [
     {
       id: 182,

@@ -15,7 +15,7 @@
           <v-carousel
             :value="chooseShip"
             hide-delimiters
-            @change="CHANGE_CHOOSE_SHIP"
+            @change="SET_CHOOSE_SHIP"
           >
             <v-carousel-item
               v-for="(ship, i) in ships"
@@ -124,7 +124,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(['CHANGE_CHOOSE_SHIP']),
+    ...mapMutations(['SET_CHOOSE_SHIP']),
   },
 };
 </script>

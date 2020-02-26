@@ -1,7 +1,15 @@
+function addHour(h) {
+  let date = new Date();
+  let splitH = h.split(":");
+  let hour = parseInt(splitH[0], 10);
+  date.setHours(hour + 1);
+  return `${date.getHours().toString()}:${splitH[1]}`;
+}
+
 export default {
   SET_CHOOSE_SHIP(state, value) {
     state.chooseShip = value;
-    state.dateRent.name = state.ship[value].name;
+    state.dateRent.ship = state.ships[value].name;
   },
   CHANGE_RESULT(state, value) {
     state.result = value;
@@ -11,6 +19,7 @@ export default {
   },
   SET_START_RENT(state, value) {
     state.dataRent.start = value;
+    state.dataRent.end = addHour(value);
   },
   SET_END_RENT(state, value) {
     state.dataRent.end = value;
@@ -27,4 +36,7 @@ export default {
   SET_SHIP(state, value) {
     state.dataRent.ship = value;
   },
+  SET_CODE(state, value) {
+    state.code = value;
+  }
 };

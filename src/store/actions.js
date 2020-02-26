@@ -6,7 +6,10 @@ export default {
     commit
   }) {
     api.post('rent', state.dataRent, (response) => {
-      commit('SET_STATUS', (response));
+      if (response.status === 200) {
+        commit('SET_CODE', (response.code));
+      }
+      commit('SET_STATUS', (response.status));
     });
   },
 };
