@@ -1,4 +1,6 @@
 export default {
+  urlBackend: 'http://localhost:3000/api/v1/',
+  status: 0,
   chooseShip: 0,
   ships: [
     {
@@ -36,6 +38,6 @@ export default {
     start: '08:00',
     sum: '',
     end: '09:00',
-    sheep: '',
+    ship: '',
   },
 };

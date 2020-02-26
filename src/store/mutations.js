@@ -21,4 +21,10 @@ export default {
   SET_SUM_RENT(state, value) {
     state.dataRent.sum = value;
   },
+  SET_STATUS(state, value) {
+    state.status = value;
+  },
+  SET_SHIP(state, value) {
+    state.dataRent.ship = value;
+  },
 };

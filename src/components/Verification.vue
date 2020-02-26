@@ -19,7 +19,7 @@
           <v-btn
             text
             :disabled="!valid"
-            @click="validate"
+            @click="validate()"
           >
             Отправить
           </v-btn>
@@ -46,12 +46,13 @@ export default {
     };
   },
   computed: {
-    ...mapState(['dataRent']),
+    ...mapState(['dataRent', 'chooseShip', 'ships']),
   },
   methods: {
-    ...mapMutations(['SET_EMAIL']),
+    ...mapMutations(['SET_EMAIL', 'SET_SHIP']),
     validate () {
       if (this.$refs.form.validate()) {
+        this.SET_SHIP(this.ships[this.chooseShip].name);
         this.$store.dispatch('sendDataRent');
       }
     },
