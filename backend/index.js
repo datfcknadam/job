@@ -1,46 +1,20 @@
-﻿let express = require('express');
-let app = express();
-let email = require('emailjs');
-let cors = require('cors');
-let functions = require('./functions/index');
-
-const bodyParser = require('body-parser')
-app.use(bodyParser.json()) // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
-app.use(cors());
+﻿const express = require('express');
+const app = express();
+const { apiUrl } = require('./global/index');
+const { verification } = require('./emailjs/index');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const router = require('./router/index');
 
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 
-let server = email.server.connect({
-  user: "river.port1111@gmail.com",
-  password: "Swordfish1!2@",
-  host: "smtp.gmail.com",
-  ssl: true,
-  port: 465
-});
-
-app.get('/api/v1', function (req, res) {
-  res.send('Hello World!');
-});
-
-app.post('/api/v1/rent', function (req, res) {
-  let { body } = req;
-  let randN = functions.randNumber();
-  let text = `Здравствуйте! Вы арендовали теплоход "${body.ship}" ${body.date} c ${body.start} до ${body.end} на сумму ${body.sum}руб \n
-  Код для подтверждения ${randN}.`;
-  server.send({
-    text,
-    from: "Речной порт <username@your-email.com>",
-    to: body.userEmail,
-    subject: `Аренда теплохода ${body.ship}`,
-  }, function(err) {
-    if (err) {
-      res.send({status: 400})
-    } else {
-      res.send({code: randN, status: 200});
-    }
-  });
-});
+app.use(bodyParser.json()) // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+app.use(cors());
+app.use(`${apiUrl}rent`, router.rent);
+app.use(`${apiUrl}client`, router.client);
+app.use(`${apiUrl}sheep`, router.sheep);
+app.post(`${apiUrl}verification`,  (req, res) => verification(req, res));
 
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!');

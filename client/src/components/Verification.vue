@@ -100,15 +100,14 @@ export default {
     validate () {
       if (this.$refs.form.validate()) {
         this.SET_SHIP(this.ships[this.chooseShip].name);
-        this.$store.dispatch('sendDataRent');
+        this.$store.dispatch('verificationRent');
         this.SET_STATUS(300);
       }
     },
     validateCode() {
-      console.log(this.code, this.inputCode);
       if (this.code === parseInt(this.inputCode, 10)) {
         this.error = false;
-        this.$store.dispatch('createRent');
+        this.$store.dispatch('sendDataRent');
         console.log('ok');
       } else {
         this.error = true;

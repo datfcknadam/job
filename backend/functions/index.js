@@ -1,7 +1,7 @@
 function randNumber() {
-    return Math.floor(Math.random() * (99999 - 10000 + 1)) + 10000;
+  return Math.floor(Math.random() * (99999 - 10000 + 1)) + 10000;
 }
 
 module.exports = {
-    randNumber,
+  randNumber,
 }
