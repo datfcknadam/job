@@ -1,10 +1,13 @@
 ﻿const mongoose = require('mongoose');
-let host = process.env.MONGO_HOST,
-    port = process.env.MONGO_PORT,
-    database = process.env.MONGO_DB,
-    user = process.env.MONGO_USERNAME,
-    password = process.env.MONGO_PASSWORD;
-let url = `mongodb://${user}:${password}:${host}${port}:/${database}`;
+const {
+    MONGO_USER,
+    MONGO_PASSWORD,
+    MONGO_HOST,
+    MONGO_PORT,
+    MONGO_DB 
+  } = require ('../env/index');
+
+let url = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}:${MONGO_HOST}:${MONGO_PORT}:/${MONGO_DB}`;
 const options = {
   useNewUrlParser: true,
   reconnectTries: Number.MAX_VALUE,

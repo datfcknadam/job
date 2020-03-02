@@ -1,8 +1,8 @@
 ﻿const functions = require('../functions/index');
 const email = require('emailjs');
-const { settingSMPT } = require('../env/index');
+const { SETTING_SMPT } = require('../env/index');
 
-let server = email.server.connect(settingSMPT);
+let server = email.server.connect(SETTING_SMPT);
 
 const verification = (req, res) => {
   let { body } = req;

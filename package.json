@@ -1,0 +1,25 @@
+{
+  "name": "diplom",
+  "version": "1.0.0",
+  "description": "diplom",
+  "main": "index.js",
+  "dependencies": {
+    "@vue/cli": "^4.2.3",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "install": "cd backend && npm install & cd front/client && npm install & cd front/admin && npm install",
+    "dev": "cd backend && nodemon index.js & cd front/client && npm run serve & cd front/admin && npm run serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/datfcknadam/job.git"
+  },
+  "author": "K.E",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/datfcknadam/job/issues"
+  },
+  "homepage": "https://github.com/datfcknadam/job#readme"
+}

@@ -12,7 +12,7 @@ const SETTING_SMPT = {
   port: 465
 };
 
-const {
+module.exports = {
   API_URL,
   MONGO_HOST,
   MONGO_PORT,
@@ -20,4 +20,4 @@ const {
   MONGO_USERNAME,
   MONGO_PASSWORD,
   SETTING_SMPT
-} = process.env;
+};
