@@ -1,6 +1,6 @@
 ﻿const functions = require('../functions/index');
 const email = require('emailjs');
-const { settingSMPT } = require('../global/index');
+const { settingSMPT } = require('../env/index');
 
 let server = email.server.connect(settingSMPT);
 

@@ -1,6 +1,18 @@
 ﻿const mongoose = require('mongoose');
-const { mongoServer, database } = require('../global/index');
-const mConn = () => mongoose.connect(`mongodb://${mongoServer}/${database}`, { useNewUrlParser: true });
+let host = process.env.MONGO_HOST,
+    port = process.env.MONGO_PORT,
+    database = process.env.MONGO_DB,
+    user = process.env.MONGO_USERNAME,
+    password = process.env.MONGO_PASSWORD;
+let url = `mongodb://${user}:${password}:${host}${port}:/${database}`;
+const options = {
+  useNewUrlParser: true,
+  reconnectTries: Number.MAX_VALUE,
+  reconnectInterval: 500,
+  connectTimeoutMS: 10000,
+};
+
+const mConn = () => mongoose.connect(url, options);
 
 const create = (model, data) => {
   mConn()

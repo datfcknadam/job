@@ -1,11 +1,10 @@
 ﻿const express = require('express');
 const app = express();
-const { apiUrl } = require('./global/index');
+const apiUrl = process.env.API_URL;
 const { verification } = require('./emailjs/index');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const router = require('./router/index');
-
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 
 app.use(bodyParser.json()) // for parsing application/json
