@@ -1,21 +1,27 @@
 # diplom
 
-## Project setup
+## Установка зависимостей
 ```
 npm install
+
+```
+### Аутентификация в докерхаб и поднятия контейнера с Монго
+```
+npm run docker:log
+npm run docker:up
+
+```
+### Сборка проекта
+```
+npm run dev
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
+### Сборка проекта и обфускация кода
 ```
 npm run build
 ```
 
-### Lints and fixes files
+### Линтинг кода
 ```
 npm run lint
 ```
