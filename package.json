@@ -11,7 +11,8 @@
   "scripts": {
     "install": "cd backend && npm install & cd front/client && npm install & cd front/admin && npm install",
     "dev": "cd backend && nodemon index.js & cd front/client && npm run serve & cd front/admin && npm run serve",
-    "docker:log": "docker login --username=diplomriverport --email=river.port1111@gmail.com" 
+    "docker:log": "docker login --username=diplomriverport --email=river.port1111@gmail.com",
+    "docker:up": "docker-compose up"
   },
   "repository": {
     "type": "git",
