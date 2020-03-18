@@ -5,6 +5,7 @@ const { Client } = require('../mongoose/schema');
 
 router.post('/create', function(req, res) {
   const { body } = req;
+  console.log(req);
   mFunctions.create(new Client());
 });
 router.get('/read', function(req, res) {

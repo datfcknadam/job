@@ -7,11 +7,12 @@
     "@vue/cli": "^4.2.3",
     "cors": "^2.8.5"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "concurrently": "^5.1.0"
+  },
   "scripts": {
-    "install": "cd backend && npm install & cd front/client && npm install & cd front/admin && npm install",
-    "dev": "cd backend && nodemon index.js & cd front/client && npm run serve & cd front/admin && npm run serve",
-    "docker:log": "docker login --username=diplomriverport --email=river.port1111@gmail.com",
+    "install": "cd backend && npm install & cd ../front/client && npm install & cd ../admin && npm install & docker login -u=diplomriverport -p=diplomriver & docker pull mongo:latest",
+    "dev": "concurrently \"(npm run --prefix front/client serve )\"  \"(npm run --prefix front/admin serve )\" \"(cd backend && nodemon index.js )\"",
     "docker:up": "docker-compose up"
   },
   "repository": {

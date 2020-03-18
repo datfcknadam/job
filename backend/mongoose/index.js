@@ -1,37 +1,33 @@
 ﻿const mongoose = require('mongoose');
 const {
-    MONGO_USER,
-    MONGO_PASSWORD,
     MONGO_HOST,
     MONGO_PORT,
-    MONGO_DB 
+    MONGO_DB
   } = require ('../env/index');
 
-let url = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}:${MONGO_HOST}:${MONGO_PORT}:/${MONGO_DB}`;
+const url = `mongodb://${MONGO_HOST}:${MONGO_PORT}:/${MONGO_DB}`;
 const options = {
+  useUnifiedTopology: true,
   useNewUrlParser: true,
-  reconnectTries: Number.MAX_VALUE,
-  reconnectInterval: 500,
-  connectTimeoutMS: 10000,
 };
 
 const mConn = () => mongoose.connect(url, options);
-
-const create = (model, data) => {
-  mConn()
-    .then(() => {
-    return model.create(data).then((res) => console.log(res))
-      .catch((err) => console.log(err));
-  }).catch((errCon) => console.log(errCon));
-  mongoose.disconnect();
+const mDConn = () => mongoose.disconnect();
+const create = (model, data, handler) => {
+  mConn();
+    model.create(data, function(err) {
+      mDConn();
+      if(!err) return handler.json(200);
+      else handler.json(400);
+    })
 };
-const read = (model, data) => {
-  mConn()
-    .then(() => {
-    return model.find(data).then((res) => console.log(res))
-      .catch((err) => console.log(err));
-  }).catch((errCon) => console.log(errCon));
-  mongoose.disconnect();
+const read = (model, handler, data) => {
+  mConn();
+  model.find(data, function(err, res) {
+    console.log(res);
+    mDConn();
+    handler.json(res);
+  });
 };
 const update = (model, {id, data}) => {
   mConn()

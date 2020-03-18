@@ -30,7 +30,7 @@ const RentSchema = new Schema({
     type: String,
     required: true,
   },
-  id_sheep: {
+  id_ship: {
     type: ObjectId,
     required: true,
     ref: 'Sheep',
@@ -47,12 +47,21 @@ const SheepSchema = new Schema({
     type: String,
     required: true,
   },
+  avatar: {
+    type: String,
+    avatar: true,
+  },
+  description: {
+    type: String,
+  },
   price:{
     type: Number,
     required: true,
   },
   gallery: [String],
-  options_info: String,
+  volume: {
+    type: String,
+  },
 }, { versionKey: false });
 
 const Client = mongoose.model('Client', ClientSchema);

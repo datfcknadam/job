@@ -6,7 +6,7 @@
           1. Выберите теплоход
         </div>
       </v-card-title>
-      <v-card-text class="d-flex flex-column">
+      <v-card-text class="d-flex flex-column" v-if="ships.length">
         <div class="carousel-ship">
           <div
             class="mb-5 text-center text-blue title-ship"
@@ -24,7 +24,7 @@
               <v-img
                 contain
                 aspect-ratio="2.7"
-                :src="ship.image"
+                :src="urlBackend + ship.avatar"
               />
             </v-carousel-item>
           </v-carousel>
@@ -43,7 +43,7 @@
             <div
               v-show="showAnnotation"
               class="subtitle-1 mt-2 pl-5"
-              v-text="ships[chooseShip].annotation"
+              v-text="ships[chooseShip].description"
             />
           </div>
           <div class="gallery">
@@ -118,13 +118,16 @@ export default {
     };
   },
   computed: {
-    ...mapState(['chooseShip', 'ships', 'result']),
+    ...mapState(['chooseShip', 'ships', 'result', 'urlBackend']),
     getShipName() {
       return this.ships[this.chooseShip].name;
     },
   },
   methods: {
     ...mapMutations(['SET_CHOOSE_SHIP']),
+  },
+  mounted() {
+    this.$store.dispatch('getShips');
   },
 };
 </script>

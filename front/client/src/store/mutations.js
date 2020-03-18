@@ -38,5 +38,9 @@ export default {
   },
   SET_CODE(state, value) {
     state.code = value;
-  }
+  },
+  SET_SHIPS(state, value) {
+    console.log(value);
+    state.ships = value;
+  },
 };

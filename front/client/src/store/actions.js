@@ -20,4 +20,9 @@ export default {
       commit('SET_STATUS', (response.status));
     });
   },
+  getShips({commit}) {
+    api.get('ship/read', (response) => {
+      commit('SET_SHIPS', response);
+    });
+  },
 };

@@ -1,9 +1,9 @@
 ﻿const client = require("./client");
 const rent = require("./rent");
-const sheep = require("./sheep");
+const ship = require("./ship");
 
 module.exports = {
   client,
   rent,
-  sheep,
+  ship,
 };
