@@ -7,10 +7,10 @@ export default {
       if (response.gallery) commit('SET_GALLERY', response.gallery);
     })
   },
-  createNewSheep({state, commit}, value) {
-    let avatar = state.avatar;
-    let gallery =  state.gallery;
-    let data = {
+  createNewShip({state, commit}, value) {
+    const avatar = state.avatar;
+    const gallery =  state.gallery;
+    const data = {
       value,
       avatar,
       gallery,

@@ -60,7 +60,7 @@ const SheepSchema = new Schema({
   },
   gallery: [String],
   volume: {
-    type: String,
+    type: Number,
   },
 }, { versionKey: false });
 

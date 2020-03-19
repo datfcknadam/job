@@ -1,13 +1,15 @@
-﻿const functions = require('../functions/index');
+﻿const sha1 = require('js-sha1');
+const functions = require('../functions/index');
 const email = require('emailjs');
 const { SETTING_SMPT } = require('../env/index');
 
-let server = email.server.connect(SETTING_SMPT);
+const server = email.server.connect(SETTING_SMPT);
 
 const verification = (req, res) => {
-  let { body } = req;
-  let randN = functions.randNumber();
-  let text = `Здравствуйте! Вы арендовали теплоход "${body.ship}" ${body.date} c ${body.start} до ${body.end} на сумму ${body.sum}руб\n
+  const { body } = req;
+  const randN = functions.randNumber();
+  const shaPass = sha1(randN);
+  const text = `Здравствуйте! Вы арендовали теплоход "${body.ship}" ${body.date} c ${body.start} до ${body.end} на сумму ${body.sum}руб\n
   Код для подтверждения ${randN}.`;
   server.send({
     text,
@@ -18,7 +20,7 @@ const verification = (req, res) => {
     if (err) {
       res.send({status: 400})
     } else {
-      res.send({code: randN, status: 200});
+      res.send({code: shaPass, status: 200});
     }
   });
 };

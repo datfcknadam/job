@@ -49,7 +49,6 @@
               v-model="inputCode"
               class="verification-field"
               label="Код"
-              :hint="hintField"
               placeholder="Введите код из сообщения на почте"
               outlined
               required
@@ -76,6 +75,8 @@
 
 <script>
 import { mapMutations, mapState } from 'vuex';
+import sha1 from 'js-sha1';
+
 export default {
   name: 'Verification',
   data() {
@@ -105,7 +106,10 @@ export default {
       }
     },
     validateCode() {
-      if (this.code === parseInt(this.inputCode, 10)) {
+      const intCode = parseInt(this.inputCode, 10);
+      const shaCode = sha1(intCode);
+      console.log(shaCode, this.code);
+      if (this.code ===  shaCode) {
         this.error = false;
         this.$store.dispatch('sendDataRent');
         console.log('ok');

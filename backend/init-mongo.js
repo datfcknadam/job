@@ -5,7 +5,7 @@
       roles: [
         {
           role: "readWrite",
-          db: "river-port",
+          db: "river",
         },
       ],
     },

@@ -23,18 +23,16 @@ router.post('/create', (req, res) => {
   mFunctions.create(Sheep, construct, res);
 });
 router.post('/upload', cpUpload, (req, res) => {
-  const { body } = req;
   res.json(req.files);
 });
 router.get('/read/:params', (req, res) => {
   const { params } = req;
   const data = params.params || {};
-  ships: mFunctions.read(Sheep, res, { _id: new ObjectID(data) });
+  mFunctions.read(Sheep, res, { _id: new ObjectID(data) });
 });
 router.get('/read', (req, res) => {
   const { params } = req;
-  const data = params || {};
-  ships: mFunctions.read(Sheep, res);
+  mFunctions.read(Sheep, res);
 });
 router.post('/update', (req, res) => {
   const { body } = req;

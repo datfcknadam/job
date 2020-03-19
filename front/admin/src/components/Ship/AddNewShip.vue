@@ -2,31 +2,22 @@
   <v-dialog v-model="dialog" max-width="400">
       <template v-slot:activator="{ on }">
         <v-btn
-          v-if="_id"
-          v-on="on"
-          icon
-        >
-          <v-icon v-text="'mdi-pencil'" @click="getData()"/>
-        </v-btn>
-        <v-btn
-          v-else
           v-on="on"
           v-text="'Добавить теплоход'"
           class="align-self-end mr-5"
         />
       </template>
       <v-card>
-        <v-card-title v-if="_id" class="headline">Редактировать теплоход</v-card-title>
-        <v-card-title v-else class="headline">Добавить новый теплоход</v-card-title>
+        <v-card-title class="headline">Добавить новый теплоход</v-card-title>
         <v-card-text>
           <v-form ref="form">
-            <v-text-field :value="dataShip.name"
+            <v-text-field
+              v-model="name"
               :rules="[rules.required]"
               label="Название корабля"
             />
             <v-file-input
-              :value="dataShip.avatar"
-              :text="avatar"
+              v-model="avatar"
               accept="image/*"
               label="Изображение корабля"
               chips
@@ -34,25 +25,25 @@
               @change="uploadFile(avatar, 'avatar')"
             />
             <v-textarea
-              :value="dataShip.description"
+              v-model="description"
               label="Описание"
             />
             <v-text-field
-              :value="dataShip.price"
+              v-model="price"
               type="number"
               label="Цена"
               suffix="руб/час"
               :rules="[rules.required]"
             />
             <v-text-field
-              :value="dataShip.volume"
+              v-model="volume"
               type="number"
               label="Вместительность"
               suffix="человек"
               :rules="[rules.required]"
             />
             <v-file-input
-              :value="dataShip.gallery"
+              v-model="gallery"
               label="Галерея"
               accept="image/*"
               chips
@@ -71,7 +62,6 @@
     </v-dialog>
 </template>
 <script>
-import { mapState } from 'vuex';
 
 export default {
   name: 'AddNewShip',
@@ -90,12 +80,6 @@ export default {
       volume: null,
       gallery: [],
     };
-  },
-  props: {
-    _id: {
-      type: String,
-      default: () => '',
-    },
   },
   methods: {
     prepare() {
@@ -121,19 +105,22 @@ export default {
     },
     validation() {
       if (this.$refs.form.validate()) {
-        let { name, description, price, volume } = this;
+        const { name, description, price, volume } = this;
         if (this.avatar) {
-          this.$store.dispatch('editShip', {
+          this.$store.dispatch('createNewShip', {
             name,
             description,
             price,
             volume,
-          }).then(() => setTimeout(this.$store.dispatch('getShips'), 1000));
+          }).then(() => {
+              this.dialog = false;
+              setTimeout(this.$store.dispatch('getShips'), 1000)
+            });
         }
       }
     },
     uploadFile(value, name) {
-      let that = this;
+      const that = this;
       console.log(value);
       that.loading(name, true);
       this.$store.dispatch(
@@ -145,14 +132,6 @@ export default {
         that.loading(name, false);
       });
     },
-    getData() {
-      if (this._id) {
-        this.$store.dispatch('getDataShip', this._id );
-      }
-    },
-  },
-  computed: {
-    ...mapState(['dataShip']),
   },
 };
 </script>

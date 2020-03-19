@@ -21,21 +21,20 @@ const create = (model, data, handler) => {
       else handler.json(400);
     })
 };
-const read = (model, handler, data) => {
-  mConn();
-  model.find(data, function(err, res) {
-    console.log(res);
-    mDConn();
-    handler.json(res);
+const read = async (model, handler, data) => {
+  mConn().then(() => {
+    model.find(data, function(err, res) {
+      console.log(res);
+      mDConn();
+      handler.json(res);
   });
+  }).catch((err) => console.log(err))
+
 };
-const update = (model, {id, data}) => {
-  mConn()
-    .then(() => {
-    return model.update(id, { $set: { data } }).then((res) => console.log(res))
+const update = async (model, {id, data}) => {
+  await mConn()
+    return model.update(id, { $set: { data } }).then((res) => mDConn())
       .catch((err) => console.log(err));
-  }).catch((errCon) => console.log(errCon));
-  mongoose.disconnect();
 };
 const drop = (model, data) => {
   mConn()

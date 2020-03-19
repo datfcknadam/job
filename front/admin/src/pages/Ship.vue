@@ -35,7 +35,7 @@
         <div v-text="item.gallery"/>
       </template>
       <template v-slot:item.btn="{item}">
-        <add-new-ship :_id="item._id"/>
+        <edit-ship :_id="item._id"/>
       </template>
     </v-data-table>
     <add-new-ship />
@@ -45,6 +45,7 @@
 
 <script>
 import AddNewShip from '../components/Ship/AddNewShip';
+import EditShip from '../components/Ship/EditShip';
 import { mapState } from 'vuex';
 import Status from '../components/Status';
 
@@ -52,7 +53,8 @@ export default {
   name: 'Ship',
   components: {
     AddNewShip,
-    Status
+    Status,
+    EditShip,
   },
   data() {
     return {
