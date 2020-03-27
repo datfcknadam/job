@@ -46,7 +46,10 @@
               v-text="ships[chooseShip].description"
             />
           </div>
-          <div class="gallery">
+          <div
+            v-if="ships.gallery"
+            class="gallery"
+          >
             <v-btn
               class="mt-5"
               @click="showGallery = !showGallery"

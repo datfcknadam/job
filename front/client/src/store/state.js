@@ -6,11 +6,13 @@ export default {
   ships: [],
   result: false,
   dataRent: {
-    userEmail: '',
+    email: '',
+    phone: '',
     date: new Date().toISOString().substr(0, 10),
     start: '08:00',
     sum: null,
     end: '09:00',
-    ship: null,
+    ship_id: null,
   },
+  success: false,
 };

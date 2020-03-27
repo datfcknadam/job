@@ -21,13 +21,23 @@ export default {
     });
   },
   getShips({commit}) {
-    api.get('ship/read',  (response) => {
+    api.get('ship/read', async (response) => {
       commit('SET_SHIPS', response);
     });
   },
   getDataShip({commit}, params) {
     api.get(`ship/read/${params}`, (response) => {
       commit('SET_DATA_SHIP', response[0]);
+    });
+  },
+  editShip({state, commit}) {
+    api.post('ship/update', state.dataShip, (response) => {
+      commit('SET_STATUS', response);
+    });
+  },
+  deleteShip({commit}, value) {
+    api.post('ship/delete', {_id: value}, (response) => {
+      commit('SET_STATUS', response);
     });
   },
 };

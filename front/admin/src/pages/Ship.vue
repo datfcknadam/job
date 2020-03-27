@@ -2,7 +2,7 @@
   <div class="pages d-flex flex-column">
     <v-data-table
       :headers="headers"
-      :items="ships"
+      :items="setShips()"
       :loading="ships.length === 0"
     >
       <template v-slot:item._id="{ item }">
@@ -34,8 +34,11 @@
       <template v-slot:item.gallery="{ item }">
         <div v-text="item.gallery"/>
       </template>
-      <template v-slot:item.btn="{item}">
+      <template v-slot:item.editBtn="{item}">
         <edit-ship :_id="item._id"/>
+      </template>
+      <template v-slot:item.delBtn="{item}">
+        <delete-ship :_id="item._id"/>
       </template>
     </v-data-table>
     <add-new-ship />
@@ -46,8 +49,10 @@
 <script>
 import AddNewShip from '../components/Ship/AddNewShip';
 import EditShip from '../components/Ship/EditShip';
+import DeleteShip from '../components/Ship/DeleteShip';
 import { mapState } from 'vuex';
 import Status from '../components/Status';
+import sha from 'js-sha1';
 
 export default {
   name: 'Ship',
@@ -55,9 +60,11 @@ export default {
     AddNewShip,
     Status,
     EditShip,
+    DeleteShip,
   },
   data() {
     return {
+      currentShips: [],
       headers: [
         { text: 'ID', value: '_id' },
         { text: 'Название', value: 'name' },
@@ -66,15 +73,24 @@ export default {
         { text: 'Цена за час', value: 'price' },
         { text: 'Макс.чел', value: 'volume' },
         { text: 'Галерея', value: 'gallery' },
-        { text: '', value: 'btn' },
+        { text: '', value: 'editBtn' },
+        { text: '', value: 'delBtn' },
       ],
     };
   },
   computed: {
     ...mapState(['ships', 'urlBackend']),
   },
-  mounted() {
-    this.$store.dispatch('getShips');
+  methods: {
+    setShips() {
+      let {ships, currentShips} = this;
+      const shaSh = sha(ships);
+      const shaCurrSh = sha(currentShips);
+      if (shaSh !== shaCurrSh) {
+        currentShips = ships;
+      }
+      return currentShips;
+    }
   },
 };
 </script>

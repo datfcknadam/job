@@ -1,5 +1,5 @@
 ﻿<template>
-  <div class="calendar">
+  <div class="calendar" v-if="ships.length">
     <v-row
       align="center"
       justify="center"
@@ -85,7 +85,7 @@
         Вы забронировали теплоход
         <span
           class="value"
-          v-text="ships[chooseShip].name"
+          v-text="ships[chooseShip].name || name"
         />
         на
         <span
@@ -162,8 +162,8 @@ export default {
       let disExCharge = 0;
       let exChargeWeek = 0;
       let sumRent = 0;
-      let weekend = this.getWeekDay === 'ПТ' ||
-        this.getWeekDay === 'СБ'
+      let weekend = this.getWeekDay === 'ПТ'
+        || this.getWeekDay === 'СБ'
         || this.getWeekDay === 'ВС';
 
       this.mathHour > 3 ? disExCharge = 0.7 : disExCharge = 1;
@@ -178,8 +178,7 @@ export default {
           sumRent = sumRent + (price * disExCharge);
         }
       }
-
-      this.SET_SUM_RENT(sumRent);
+      this.SET_SUM_RENT(sumRent.toFixed());
 
       if (this.mathHour > 3) {
         return `${price.toFixed()}руб x 3ч + ${(price * disExCharge).toFixed()}руб x ${this.mathHour - 3}ч  = ${sumRent.toFixed()}`;

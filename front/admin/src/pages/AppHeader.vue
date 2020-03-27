@@ -32,15 +32,36 @@ export default {
   data() {
     return {
       routerPath: this.$router.currentRoute.path,
+      intervalId: 0,
     };
-  },
-  mounted() {
-    console.log(this.$router.currentRoute);
   },
   methods: {
     console() {
       this.routerPath = this.$router.currentRoute.path;
     },
+  },
+  mounted() {
+      let {$router, intervalId} = this;
+      if (intervalId) clearInterval(intervalId);
+      if ($router.currentRoute.path === "/") return;
+      if ($router.currentRoute.path === "/client") return;
+      if ($router.currentRoute.path === "/ship") {
+        intervalId = setInterval(() =>this.$store.dispatch('getShips'), 1000);
+      }
+  },
+  watch: {
+    routerPath() {
+      let {$router, intervalId} = this;
+      if (intervalId) clearInterval(intervalId);
+      if ($router.currentRoute.path === "/") return;
+      if ($router.currentRoute.path === "/client") return;
+      if ($router.currentRoute.path === "/ship") {
+        intervalId = setInterval(() =>this.$store.dispatch('getShips'), 1000);
+      }
+    },
+  },
+  beforeDestroy() {
+    clearInterval(this.intervalId);
   },
 };
 </script>

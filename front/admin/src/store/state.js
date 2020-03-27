@@ -1,12 +1,11 @@
 ﻿export default {
-  avatar: null,
-  gallery: [],
   ships: [],
+  gallery: [],
   status: null,
   urlBackend: 'http://localhost:3000/api/v1/',
   dataShip: {
     _id: '',
-    avatar: '',
+    avatar: {},
     description: '',
     gallery: [],
     name: '',

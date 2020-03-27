@@ -121,14 +121,12 @@ export default {
     },
     uploadFile(value, name) {
       const that = this;
-      console.log(value);
       that.loading(name, true);
       this.$store.dispatch(
         'uploadImage',
         this.generateData([value],
         name,
-      )).then((response) => {
-        console.log(response);
+      )).then(() => {
         that.loading(name, false);
       });
     },

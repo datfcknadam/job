@@ -7,17 +7,21 @@ export default {
   }) {
     api.post('verification', state.dataRent, (response) => {
       if (response.status === 200) {
-        commit('SET_CODE', (response.code));
+        commit('SET_CODE', response.code);
       }
-      commit('SET_STATUS', (response.status));
+      commit('SET_STATUS', response.status);
     });
   },
   sendDataRent({
     state,
     commit
   }) {
-    api.post('rent', state.dataRent, (response) => {
-      commit('SET_STATUS', (response.status));
+    api.post('rent/create', state.dataRent, (response) => {
+      let success;
+      if (response.status === 200) {
+        success = true;
+      }
+      commit('SET_SUCCESS', success);
     });
   },
   getShips({commit}) {

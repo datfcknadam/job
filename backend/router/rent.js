@@ -3,9 +3,10 @@ const router = express.Router();
 const mFunctions = require('../mongoose/index');
 const { Rent } = require('../mongoose/schema');
 
-router.post('/create', function(req, res) {
+router.post('/create', (req, res) => {
   const { body } = req;
-  res.send({ status: mFunctions.create(new Rent(), body) });
+  console.log(body);
+  /* mFunctions.create(Rent, body, res); */
 });
 router.get('/read', function(req, res) {
   res.send({rents: mFunctions.read(new Rent())});

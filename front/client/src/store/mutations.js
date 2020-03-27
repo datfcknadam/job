@@ -10,12 +10,13 @@ export default {
   SET_CHOOSE_SHIP(state, value) {
     state.chooseShip = value;
     state.dateRent.ship = state.ships[value].name;
+    state.dateRent.ship_id = state.ships[value]._id;
   },
   CHANGE_RESULT(state, value) {
     state.result = value;
   },
   SET_EMAIL(state, value) {
-    state.dataRent.userEmail = value;
+    state.dataRent.email = value;
   },
   SET_START_RENT(state, value) {
     state.dataRent.start = value;
@@ -33,14 +34,19 @@ export default {
   SET_STATUS(state, value) {
     state.status = value;
   },
-  SET_SHIP(state, value) {
+  SET_SHIP_ID(state, value) {
+    state.dataRent.ship_id = value;
+  },
+  SET_SHIP_NAME(state, value) {
     state.dataRent.ship = value;
   },
   SET_CODE(state, value) {
     state.code = value;
   },
+  SET_PHONE(state, value) {
+    state.dataRent.phone = value;
+  },
   SET_SHIPS(state, value) {
-    console.log(value);
     state.ships = value;
   },
 };

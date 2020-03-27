@@ -14,7 +14,7 @@ const verification = (req, res) => {
   server.send({
     text,
     from: "Речной порт <username@your-email.com>",
-    to: body.userEmail,
+    to: body.email,
     subject: `Аренда теплохода ${body.ship}`,
   }, function(err) {
     if (err) {

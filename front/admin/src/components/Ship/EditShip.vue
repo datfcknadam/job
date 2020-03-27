@@ -8,7 +8,7 @@
           <v-icon v-text="'mdi-pencil'" @click="getData()"/>
         </v-btn>
       </template>
-      <v-card>
+      <v-card :loading="loadData">
         <v-card-title class="headline">Редактировать теплоход</v-card-title>
         <v-card-text>
           <v-form ref="form">
@@ -16,9 +16,10 @@
               :value="dataShip.name"
               :rules="[rules.required]"
               label="Название корабля"
+              @input="SET_NAME"
             />
             <v-file-input
-              v-model="avatar"
+              v-model="prepareData"
               accept="image/*"
               label="Изображение корабля"
               chips
@@ -26,8 +27,9 @@
               @change="uploadFile(avatar, 'avatar')"
             />
             <v-textarea
-              :value="dataShip.description"
+              :value="dataShip.description || ''"
               label="Описание"
+              @input="SET_DESCRIPTION"
             />
             <v-text-field
               :value="dataShip.price"
@@ -35,6 +37,7 @@
               label="Цена"
               suffix="руб/час"
               :rules="[rules.required]"
+              @input="SET_PRICE"
             />
             <v-text-field
               :value="dataShip.volume"
@@ -42,6 +45,7 @@
               label="Вместительность"
               suffix="человек"
               :rules="[rules.required]"
+              @input="SET_VOLUME"
             />
             <v-file-input
               :value="dataShip.gallery"
@@ -63,7 +67,7 @@
     </v-dialog>
 </template>
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 
 export default {
   name: 'AddNewShip',
@@ -73,13 +77,10 @@ export default {
       rules: {
         required: value => !!value || 'Обязательное поле.',
       },
-      name: null,
       loadGallery: false,
       loadAvatar: false,
+      loadData: true,
       avatar: {},
-      description:  null,
-      price: null,
-      volume: null,
       gallery: [],
     };
   },
@@ -90,12 +91,19 @@ export default {
     },
   },
   methods: {
+    ...mapMutations([
+      'SET_AVATAR_NAME',
+      'SET_NAME',
+      'SET_PRICE',
+      'SET_VOLUME',
+      'SET_DESCRIPTION'
+    ]),
     loading(name, loading) {
       name === 'avatar' ? this.loadAvatar = loading : this.loadGallery = loading;
     },
     generateData(files, name) {
       if (!files || !name) return;
-      console.log(files);
+
       let formData = new FormData();
 
       files.forEach((element) => {
@@ -105,38 +113,42 @@ export default {
     },
     validation() {
       if (this.$refs.form.validate()) {
-        const { name, description, price, volume } = this;
-        if (this.avatar) {
-          this.$store.dispatch('editShip', {
-            name,
-            description,
-            price,
-            volume,
-          }).then(() => setTimeout(this.$store.dispatch('getShips'), 1000));
-        }
+        this.$store.dispatch('editShip')
+          .then(() => {
+            this.dialog = false;
+            setTimeout(this.$store.dispatch('getShips'), 2000);
+          });
       }
     },
     uploadFile(value, name) {
       let that = this;
-      console.log(value);
       that.loading(name, true);
       this.$store.dispatch(
         'uploadImage',
         this.generateData([value],
         name,
-      )).then((response) => {
-        console.log(response);
+      )).then(() => {
         that.loading(name, false);
       });
     },
     getData() {
       if (this._id) {
-        this.$store.dispatch('getDataShip', this._id );
+        this.$store.dispatch('getDataShip', this._id )
+          .then(() => this.loadData = false);
       }
+      this.loadData = true;
     },
   },
   computed: {
     ...mapState(['dataShip']),
+    prepareData: {
+      set(value) {
+        this.avatar = value;
+      },
+      get() {
+        return this.dataShip.avatar;
+      },
+    },
   },
 };
 </script>

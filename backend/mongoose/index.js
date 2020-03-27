@@ -18,31 +18,38 @@ const create = (model, data, handler) => {
     model.create(data, function(err) {
       mDConn();
       if(!err) return handler.json(200);
-      else handler.json(400);
+      else handler.json(500);
     })
 };
-const read = async (model, handler, data) => {
+const read = (model, handler, data) => {
   mConn().then(() => {
     model.find(data, function(err, res) {
-      console.log(res);
       mDConn();
       handler.json(res);
   });
   }).catch((err) => console.log(err))
 
 };
-const update = async (model, {id, data}) => {
-  await mConn()
-    return model.update(id, { $set: { data } }).then((res) => mDConn())
-      .catch((err) => console.log(err));
+const update = (model, handler, {_id, data}) => {
+  console.log(data);
+  mConn().then(() => {
+    model.updateOne({_id: _id},  data, function(err, res) {
+      mDConn();
+      if (err) return handler.json(500);
+      return handler.json(200);
+    })
+  }).catch((err) => console.log(err));
 };
-const drop = (model, data) => {
+const drop = (model, handler, data) => {
   mConn()
     .then(() => {
-    return model.remove().then((res) => console.log(res))
-      .catch((err) => console.log(err));
-  }).catch((errCon) => console.log(errCon));
-  mongoose.disconnect();
+      model.remove({_id: data}, function(err, res) {
+        mDConn();
+        if (err) return handler.json(500);
+        return handler.json(200);
+      });
+    })
+    .catch((errCon) => console.log(errCon));
 };
 
 module.exports = {

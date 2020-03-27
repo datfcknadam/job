@@ -8,22 +8,16 @@
           v-model="valid"
           lazy-validation
         >
-          <!--     <v-text-field
-            label="Фамилия"
-            placeholder="Иванов"
+          <v-text-field
+            type="phone"
+            v-mask="'+# (###) ###-##-##'"
+            label="Номер телефона"
+            placeholder="+79159990999"
             outlined
             required
             :rules="[rules.required]"
+            @input="SET_PHONE"
           />
-          <v-text-field
-            label="Имя"
-            placeholder="Иван"
-            outlined
-            required
-            :rules="[rules.required, rules.email]"
-            @input="SET_EMAIL"
-          /> -->
-
           <v-text-field
             label="Почта"
             type="email"
@@ -33,7 +27,6 @@
             :rules="[rules.required, rules.email]"
             @input="SET_EMAIL"
           />
-
           <v-btn
             text
             :disabled="!valid"
@@ -74,11 +67,13 @@
 </template>
 
 <script>
+import { mask } from 'vue-the-mask';
 import { mapMutations, mapState } from 'vuex';
 import sha1 from 'js-sha1';
 
 export default {
   name: 'Verification',
+  directives: {mask},
   data() {
     return {
       valid: true,
@@ -90,17 +85,25 @@ export default {
         },
       },
       error: false,
-      inputCode: 0,
+      inputCode: '',
     };
   },
   computed: {
     ...mapState(['dataRent', 'chooseShip', 'ships', 'status', 'code']),
   },
   methods: {
-    ...mapMutations(['SET_EMAIL', 'SET_SHIP', 'SET_STATUS']),
+    ...mapMutations([
+      'SET_EMAIL',
+      'SET_SHIP',
+      'SET_STATUS',
+      'SET_PHONE',
+      'SET_SHIP_ID',
+      'SET_SHIP_NAME',
+    ]),
     validate () {
       if (this.$refs.form.validate()) {
-        this.SET_SHIP(this.ships[this.chooseShip].name);
+        this.SET_SHIP_ID(this.ships[this.chooseShip]._id);
+        this.SET_SHIP_NAME(this.ships[this.chooseShip].name)
         this.$store.dispatch('verificationRent');
         this.SET_STATUS(300);
       }
@@ -108,11 +111,10 @@ export default {
     validateCode() {
       const intCode = parseInt(this.inputCode, 10);
       const shaCode = sha1(intCode);
-      console.log(shaCode, this.code);
+
       if (this.code ===  shaCode) {
         this.error = false;
         this.$store.dispatch('sendDataRent');
-        console.log('ok');
       } else {
         this.error = true;
       }

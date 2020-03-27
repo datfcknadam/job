@@ -31,16 +31,23 @@ router.get('/read/:params', (req, res) => {
   mFunctions.read(Sheep, res, { _id: new ObjectID(data) });
 });
 router.get('/read', (req, res) => {
-  const { params } = req;
   mFunctions.read(Sheep, res);
 });
 router.post('/update', (req, res) => {
   const { body } = req;
-  mFunctions.update(new Sheep());
+  const data = {
+    name: body.name,
+    description: body.description,
+    price: body.price,
+    volume: body.volume,
+    avatar: body.avatar.path,
+    gallery: body.gallery,
+  }
+  mFunctions.update(Sheep, res, {_id: body._id, data});
 });
 router.post('/delete', (req, res) => {
   const { body } = req;
-  mFunctions.drop(new Sheep());
+  mFunctions.drop(Sheep, res, body._id);
 });
 
 module.exports = router;
