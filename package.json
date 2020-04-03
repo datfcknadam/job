@@ -12,7 +12,7 @@
   },
   "scripts": {
     "install": "cd backend && npm install & cd ../front/client && npm install & cd ../admin && npm install",
-    "dev": "concurrently \"(npm run --prefix front/client serve )\"  \"(npm run --prefix front/admin serve )\" \"(cd backend && nodemon index.js )\"",
+    "dev": "concurrently \"(npm run --prefix front/client serve )\"  \"(npm run --prefix front/admin serve )\" \"(cd backend && nodemon index.js )\""
   },
   "repository": {
     "type": "git",
