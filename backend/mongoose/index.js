@@ -17,6 +17,7 @@ const create = (model, data, handler) => {
   mConn();
     model.create(data, function(err) {
       mDConn();
+      console.log(err);
       if(!err) return handler.json(200);
       else handler.json(500);
     })
@@ -28,7 +29,14 @@ const read = (model, handler, data) => {
       handler.json(res);
   });
   }).catch((err) => console.log(err))
-
+};
+const readHandler = (model, handler, data) => {
+  mConn().then(() => {
+    model.find(data, function(err, res) {
+      mDConn();
+      handler.call(null, res);
+  });
+  }).catch((err) => console.log(err))
 };
 const update = (model, handler, {_id, data}) => {
   console.log(data);
@@ -57,4 +65,5 @@ module.exports = {
   read,
   update,
   drop,
+  readHandler,
 };

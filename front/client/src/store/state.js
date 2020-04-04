@@ -1,3 +1,5 @@
+import f from '../functions/index';
+
 export default {
   urlBackend: 'http://localhost:3000/api/v1/',
   status: 0,
@@ -9,10 +11,9 @@ export default {
     email: '',
     phone: '',
     date: new Date().toISOString().substr(0, 10),
-    start: '08:00',
+    start: f.addHour(new Date().toLocaleTimeString().slice(0, 5)),
     sum: null,
-    end: '09:00',
-    ship_id: null,
+    end: '23:59',
   },
   success: false,
 };

@@ -43,7 +43,7 @@ const RentSchema = new Schema({
   },
   created: { type: Date, default: Date.now },
 }, { versionKey: false });
-const SheepSchema = new Schema({
+const ShipSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -67,10 +67,10 @@ const SheepSchema = new Schema({
 
 /* const Client = mongoose.model('Client', ClientSchema); */
 const Rent = mongoose.model('Rent', RentSchema);
-const Sheep = mongoose.model('Sheep', SheepSchema);
+const Ship = mongoose.model('Ship', ShipSchema);
 
 module.exports = {
   /* Client, */
   Rent,
-  Sheep,
+  Ship,
 }

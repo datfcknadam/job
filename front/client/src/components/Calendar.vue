@@ -25,6 +25,7 @@
           :landscape="$vuetify.breakpoint.smAndUp"
           :min="currentDate"
           locale="ru"
+          @input="SET_DATE_RENT"
         />
       </v-col>
       <v-col
@@ -38,7 +39,7 @@
           :landscape="$vuetify.breakpoint.smAndUp"
           locale="ru"
           format="24hr"
-          min="8:00"
+          :min="minStart"
           max="23:00"
           @input="SET_START_RENT"
         />
@@ -154,6 +155,7 @@ export default {
     return {
       currentSet: 0,
       currentDate: new Date().toISOString().substr(0, 10),
+      rentToday: false,
     };
   },
   computed: {
@@ -194,34 +196,44 @@ export default {
       return this.addHour(this.dataRent.start);
     },
     getWeekDay() {
-      let transformDate = new Date(this.dataRent.date);
-      let days = ['ВС', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'];
+      const transformDate = new Date(this.dataRent.date);
+      const days = ['ВС', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'];
       return days[transformDate.getDay()];
     },
+    minStart() {
+      const today = Date.parse(new Date().toLocaleString().split(',')[0].split('.').reverse().join('-'));
+      const dayRent = Date.parse(this.dataRent.date);
+      if (today === dayRent) {
+        return this.addHour(new Date().toLocaleTimeString().slice(0, 5));
+      }
+      return '08:00';
+    },
     mathHour() {
-      let splitStart = this.dataRent.start.split(":");
-      let splitEnd = this.dataRent.end.split(":");
-      let hourStart = parseInt(splitStart[0], 10);
-      let hourEnd = parseInt(splitEnd[0], 10);
+      const splitStart = this.dataRent.start.split(":");
+      const splitEnd = this.dataRent.end.split(":");
+      const hourStart = parseInt(splitStart[0], 10);
+      const hourEnd = parseInt(splitEnd[0], 10);
 
       return (hourEnd - hourStart).toString();
     },
   },
   watch: {
-    start() {
-      if (this.dataRent.start === "23:00") {
-        this.dataRent.end = "23:59";
+    deep: true,
+    dataRent() {
+      const { dataRent } = this;
+      if (dataRent.start === "23:00") {
+        dataRent.end = "23:59";
       } else {
-        this.dataRent.end = this.addHour(this.dataRent.start);
+        dataRent.end = this.addHour(dataRent.start);
       }
     },
   },
   methods: {
     ...mapMutations(['CHANGE_RESULT', 'SET_START_RENT', 'SET_END_RENT', 'SET_SUM_RENT', 'SET_DATE_RENT']),
     addHour(h) {
-      let date = new Date()
-      let splitH = h.split(":");
-      let hour = parseInt(splitH[0], 10);
+      const date = new Date()
+      const splitH = h.split(":");
+      const hour = parseInt(splitH[0], 10);
       date.setHours(hour + 1);
       return `${date.getHours().toString()}:${splitH[1]}`;
     },

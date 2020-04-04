@@ -1,7 +1,7 @@
 ﻿const express = require("express");
 const router = express.Router();
 const mFunctions = require('../mongoose/index');
-const { Sheep } = require('../mongoose/schema');
+const { Ship } = require('../mongoose/schema');
 const ml = require('../multer/index');
 const cpUpload = ml.upload.fields([{ name: 'avatar', maxCount: 1 }, { name: 'gallery', maxCount: 6 }]);
 const ObjectID = require('mongodb').ObjectID;
@@ -20,7 +20,7 @@ router.post('/create', (req, res) => {
     avatar: body.avatar.path,
     gallery: pathGallery,
   }
-  mFunctions.create(Sheep, construct, res);
+  mFunctions.create(Ship, construct, res);
 });
 router.post('/upload', cpUpload, (req, res) => {
   res.json(req.files);
@@ -28,10 +28,10 @@ router.post('/upload', cpUpload, (req, res) => {
 router.get('/read/:params', (req, res) => {
   const { params } = req;
   const data = params.params || {};
-  mFunctions.read(Sheep, res, { _id: new ObjectID(data) });
+  mFunctions.read(Ship, res, { _id: new ObjectID(data) });
 });
 router.get('/read', (req, res) => {
-  mFunctions.read(Sheep, res);
+  mFunctions.read(Ship, res);
 });
 router.post('/update', (req, res) => {
   const { body } = req;
@@ -43,11 +43,11 @@ router.post('/update', (req, res) => {
     avatar: body.avatar.path,
     gallery: body.gallery,
   }
-  mFunctions.update(Sheep, res, {_id: body._id, data});
+  mFunctions.update(Ship, res, {_id: body._id, data});
 });
 router.post('/delete', (req, res) => {
   const { body } = req;
-  mFunctions.drop(Sheep, res, body._id);
+  mFunctions.drop(Ship, res, body._id);
 });
 
 module.exports = router;

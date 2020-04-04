@@ -11,9 +11,8 @@
     "concurrently": "^5.1.0"
   },
   "scripts": {
-    "install": "cd backend && npm install & cd ../front/client && npm install & cd ../admin && npm install & docker login -u=diplomriverport -p=diplomriver & docker pull mongo:latest",
-    "dev": "concurrently \"(npm run --prefix front/client serve )\"  \"(npm run --prefix front/admin serve )\" \"(cd backend && nodemon index.js )\"",
-    "docker:up": "docker-compose up"
+    "install": "cd backend && npm install & cd ../front/client && npm install & cd ../admin && npm install",
+    "dev": "concurrently \"(npm run --prefix front/client serve )\"  \"(npm run --prefix front/admin serve )\" \"(cd backend && nodemon index.js )\""
   },
   "repository": {
     "type": "git",

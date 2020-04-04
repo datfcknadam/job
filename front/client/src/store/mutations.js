@@ -1,10 +1,4 @@
-function addHour(h) {
-  let date = new Date();
-  let splitH = h.split(":");
-  let hour = parseInt(splitH[0], 10);
-  date.setHours(hour + 1);
-  return `${date.getHours().toString()}:${splitH[1]}`;
-}
+import f from '../functions/index';
 
 export default {
   SET_CHOOSE_SHIP(state, value) {
@@ -19,14 +13,25 @@ export default {
     state.dataRent.email = value;
   },
   SET_START_RENT(state, value) {
+    console.log('ok');
     state.dataRent.start = value;
-    state.dataRent.end = addHour(value);
+    if  (state.dataRent.start === "23:00") {
+      state.dataRent.end = "23:59";
+    } else {
+      state.dataRent.end = f.addHour(value);
+    }
   },
   SET_END_RENT(state, value) {
     state.dataRent.end = value;
   },
   SET_DATE_RENT(state, value) {
-    state.dataRent.date = value;
+    const { dataRent } = state;
+    dataRent.date = value;
+    const today = Date.parse(new Date().toLocaleString());
+    const dayRent = Date.parse(dataRent.date);
+    if (today === dayRent) {
+      this.commit('SET_START_RENT', (f.addHour(new Date().toLocaleTimeString().slice(0, 5))));
+    }
   },
   SET_SUM_RENT(state, value) {
     state.dataRent.sum = value;
