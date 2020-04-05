@@ -46,7 +46,8 @@ export default {
       if ($router.currentRoute.path === "/") return;
       if ($router.currentRoute.path === "/client") return;
       if ($router.currentRoute.path === "/ship") {
-        intervalId = setInterval(() =>this.$store.dispatch('getShips'), 1000);
+        this.$store.dispatch('getShips');
+        intervalId = setInterval(() => this.$store.dispatch('getShips'), 5000);
       }
   },
   watch: {
@@ -56,7 +57,8 @@ export default {
       if ($router.currentRoute.path === "/") return;
       if ($router.currentRoute.path === "/client") return;
       if ($router.currentRoute.path === "/ship") {
-        intervalId = setInterval(() =>this.$store.dispatch('getShips'), 1000);
+        this.$store.dispatch('getShips');
+        intervalId = setInterval(() => this.$store.dispatch('getShips'), 5000);
       }
     },
   },

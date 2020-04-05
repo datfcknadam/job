@@ -12,11 +12,10 @@ const options = {
 };
 
 const mConn = () => mongoose.connect(url, options);
-const mDConn = () => mongoose.disconnect();
 const create = (model, data, handler) => {
   mConn();
     model.create(data, function(err) {
-      mDConn();
+      mongoose.disconnect()
       console.log(err);
       if(!err) return handler.json(200);
       else handler.json(500);
@@ -25,7 +24,7 @@ const create = (model, data, handler) => {
 const read = (model, handler, data) => {
   mConn().then(() => {
     model.find(data, function(err, res) {
-      mDConn();
+      mongoose.disconnect()
       handler.json(res);
   });
   }).catch((err) => console.log(err))
@@ -33,7 +32,7 @@ const read = (model, handler, data) => {
 const readHandler = (model, handler, data) => {
   mConn().then(() => {
     model.find(data, function(err, res) {
-      mDConn();
+      mongoose.disconnect()
       handler.call(null, res);
   });
   }).catch((err) => console.log(err))
@@ -42,7 +41,7 @@ const update = (model, handler, {_id, data}) => {
   console.log(data);
   mConn().then(() => {
     model.updateOne({_id: _id},  data, function(err, res) {
-      mDConn();
+      mongoose.disconnect()
       if (err) return handler.json(500);
       return handler.json(200);
     })
@@ -52,7 +51,7 @@ const drop = (model, handler, data) => {
   mConn()
     .then(() => {
       model.remove({_id: data}, function(err, res) {
-        mDConn();
+        mongoose.disconnect()
         if (err) return handler.json(500);
         return handler.json(200);
       });
