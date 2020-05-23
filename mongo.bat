@@ -1,2 +1,2 @@
 ﻿@echo off
-"C:\Program Files\MongoDB\Server\4.2\bin\mongod.exe" --dbpath="c:\data\db" --quiet
+"С:\Users\GalninAV\Desktop\MongoDB\bin\mongod.exe" --dbpath="С:\Users\GalninAV\Desktop\MongoDB\data\db"
