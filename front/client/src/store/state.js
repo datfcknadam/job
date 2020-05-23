@@ -15,5 +15,8 @@ export default {
     sum: null,
     end: '23:59',
   },
-  success: false,
+  success: {
+    value: false,
+    success: false,
+  },
 };

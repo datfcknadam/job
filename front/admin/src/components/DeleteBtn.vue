@@ -9,9 +9,9 @@
         </v-btn>
       </template>
       <v-card :loading="loadData">
-        <v-card-title class="headline">Удалить теплоход</v-card-title>
+        <v-card-title class="headline">Удалить {{getName}}</v-card-title>
         <v-card-text>
-          Вы уверены что хотите удалить теплоход {{_id}}?
+          Вы уверены что хотите удалить {{getName}} {{_id}}?
         </v-card-text>
         <v-card-actions>
           <v-btn v-text="'Да'" @click="del()"/>
@@ -23,33 +23,51 @@
 
 <script>
 export default {
-  name: 'DeleteShip',
+  name: 'DeleteBtn',
+  props: {
+    _id: {
+      type: String,
+      default: () => '',
+    },
+    action: String,
+  },
   data() {
     return {
       dialog: false,
       loadData: false,
     };
   },
-  props: {
-    _id: {
-      type: String,
-      default: () => '',
+  computed: {
+    getName() {
+      switch (this.action) {
+        case 'Ship': {
+          return 'теплоход';
+        }
+        case 'Client': {
+          return 'клиента';
+        }
+        case 'Rent': {
+          return 'аренду';
+        }
+        default:
+          return null;
+      }
     },
   },
   methods: {
     getData() {
       if (this._id) {
-        this.$store.dispatch('getDataShip', this._id )
+        this.$store.dispatch(`getData${this.action}`, this._id )
           .then(() => this.loadData = false);
       }
       this.loadData = true;
     },
     del() {
       if (this._id) {
-        this.$store.dispatch('deleteShip', this._id)
+        this.$store.dispatch(`delete${this.action}`, this._id)
           .then(() => {
             this.dialog = false;
-            setTimeout(this.$store.dispatch('getShips'), 2000);
+            setTimeout(this.$store.dispatch(`get${this.action}`), 2000);
           })
       }
     }

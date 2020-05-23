@@ -18,13 +18,22 @@ export default {
   }) {
     api.post('rent/create', state.dataRent, (response) => {
       let success;
-      if (response.status === 200) {
+      if (response === 200) {
         success = true;
       }
-      commit('SET_SUCCESS', success);
+      state.dataRent = {
+        _id: '',
+        avatar: {},
+        description: '',
+        gallery: [],
+        name: '',
+        price: 0,
+        volume: '',
+      };
+      commit('SET_SUCCESS', { value: true, success });
     });
   },
-  getShips({commit}) {
+  getShip({commit}) {
     api.get('ship/read', (response) => {
       commit('SET_SHIPS', response);
     });

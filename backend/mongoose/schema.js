@@ -36,7 +36,7 @@ const RentSchema = new Schema({
     type: String,
     required: true,
   },
-  id_ship: {
+  ship_id: {
     type: ObjectId,
     required: true,
     ref: 'Sheep',

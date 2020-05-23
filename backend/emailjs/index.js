@@ -18,6 +18,7 @@ const verification = (req, res) => {
     subject: `Аренда теплохода ${body.ship}`,
   }, function(err) {
     if (err) {
+      console.log(err);
       res.send({status: 400})
     } else {
       res.send({code: shaPass, status: 200});

@@ -1,5 +1,6 @@
 <template>
   <v-app-bar
+    :key="Math.random()"
     color="#ececec"
     class="mb-5"
   >
@@ -12,14 +13,13 @@
       <v-btn
         text
         :disabled="routerPath === '/'"
-        @click="console"
         >
         <router-link to="/" class="nav-link" v-text="'Аренда'"/>
       </v-btn>
-      <v-btn text :disabled="routerPath === '/client'"  @click="console">
+      <!-- <v-btn text :disabled="routerPath === '/client'">
         <router-link to="/client" class="nav-link" v-text="'Клиенты'"/>
-      </v-btn>
-      <v-btn text :disabled="routerPath === '/ship'" @click="console">
+      </v-btn> -->
+      <v-btn text :disabled="routerPath === '/ship'">
         <router-link to="/ship" class="nav-link" v-text="'Теплоходы'"/>
       </v-btn>
     </v-toolbar-items>
@@ -31,39 +31,14 @@ export default {
   name: 'AppHeader',
   data() {
     return {
-      routerPath: this.$router.currentRoute.path,
       intervalId: 0,
+      routerPath: '/',
     };
   },
-  methods: {
-    console() {
-      this.routerPath = this.$router.currentRoute.path;
-    },
-  },
-  mounted() {
-      let {$router, intervalId} = this;
-      if (intervalId) clearInterval(intervalId);
-      if ($router.currentRoute.path === "/") return;
-      if ($router.currentRoute.path === "/client") return;
-      if ($router.currentRoute.path === "/ship") {
-        this.$store.dispatch('getShips');
-        intervalId = setInterval(() => this.$store.dispatch('getShips'), 5000);
-      }
-  },
   watch: {
-    routerPath() {
-      let {$router, intervalId} = this;
-      if (intervalId) clearInterval(intervalId);
-      if ($router.currentRoute.path === "/") return;
-      if ($router.currentRoute.path === "/client") return;
-      if ($router.currentRoute.path === "/ship") {
-        this.$store.dispatch('getShips');
-        intervalId = setInterval(() => this.$store.dispatch('getShips'), 5000);
-      }
+    $route(to) {
+      this.routerPath = to.path;
     },
-  },
-  beforeDestroy() {
-    clearInterval(this.intervalId);
   },
 };
 </script>

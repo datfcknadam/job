@@ -42,6 +42,9 @@
   SET_VOLUME(state, value) {
     state.dataShip.volume = value;
   },
+  SET_RENTS(state, value) {
+    state.rents = value;
+  },
   SET_DESCRIPTION(state, value) {
     state.dataShip.description = value;
   },

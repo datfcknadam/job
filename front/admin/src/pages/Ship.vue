@@ -2,7 +2,7 @@
   <div class="pages d-flex flex-column">
     <v-data-table
       :headers="headers"
-      :items="setShips()"
+      :items="setShips"
       :loading="ships.length === 0"
     >
       <template v-slot:item._id="{ item }">
@@ -38,7 +38,7 @@
         <edit-ship :_id="item._id"/>
       </template>
       <template v-slot:item.delBtn="{item}">
-        <delete-ship :_id="item._id"/>
+        <delete-btn :_id="item._id" action="Ship"/>
       </template>
     </v-data-table>
     <add-new-ship />
@@ -49,7 +49,7 @@
 <script>
 import AddNewShip from '../components/Ship/AddNewShip';
 import EditShip from '../components/Ship/EditShip';
-import DeleteShip from '../components/Ship/DeleteShip';
+import DeleteBtn from '../components/DeleteBtn';
 import { mapState } from 'vuex';
 import Status from '../components/Status';
 import sha from 'js-sha1';
@@ -60,7 +60,7 @@ export default {
     AddNewShip,
     Status,
     EditShip,
-    DeleteShip,
+    DeleteBtn,
   },
   data() {
     return {
@@ -80,8 +80,6 @@ export default {
   },
   computed: {
     ...mapState(['ships', 'urlBackend']),
-  },
-  methods: {
     setShips() {
       let {ships, currentShips} = this;
       const shaSh = sha(ships);
@@ -90,7 +88,10 @@ export default {
         currentShips = ships;
       }
       return currentShips;
-    }
+    },
+  },
+  mounted() {
+    this.$store.dispatch('getShip');
   },
 };
 </script>

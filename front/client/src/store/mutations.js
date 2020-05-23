@@ -24,6 +24,9 @@ export default {
   SET_END_RENT(state, value) {
     state.dataRent.end = value;
   },
+  SET_SUCCESS(state, value) {
+    state.success = value;
+  },
   SET_DATE_RENT(state, value) {
     const { dataRent } = state;
     dataRent.date = value;

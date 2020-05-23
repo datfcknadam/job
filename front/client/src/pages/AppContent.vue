@@ -130,7 +130,7 @@ export default {
     ...mapMutations(['SET_CHOOSE_SHIP']),
   },
   mounted() {
-    this.$store.dispatch('getShips');
+    this.$store.dispatch('getShip');
   },
 };
 </script>

@@ -3,7 +3,7 @@
     <v-data-table
       :headers="headers"
       :items="setRent()"
-      :loading="ships.length === 0"
+      :loading="client.length === 0"
     >
     </v-data-table>
     <status/>

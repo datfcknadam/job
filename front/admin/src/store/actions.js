@@ -20,9 +20,19 @@ export default {
       commit('SET_STATUS', response);
     });
   },
-  getShips({commit}) {
+  getRent({commit}) {
+    api.get('rent/read', async (response) => {
+      commit('SET_RENTS', response);
+    });
+  },
+  getShip({commit}) {
     api.get('ship/read', async (response) => {
       commit('SET_SHIPS', response);
+    });
+  },
+  getDataRent({commit}, params) {
+    api.get(`rent/read/${params}`, (response) => {
+      commit('SET_DATA_RENT', response[0]);
     });
   },
   getDataShip({commit}, params) {
@@ -32,6 +42,16 @@ export default {
   },
   editShip({state, commit}) {
     api.post('ship/update', state.dataShip, (response) => {
+      commit('SET_STATUS', response);
+    });
+  },
+  editRent({commit}, value) {
+    api.post('rent/update', { ...value }, (response) => {
+      commit('SET_STATUS', response);
+    });
+  },
+  deleteRent({commit}, value) {
+    api.post('rent/delete', {_id: value}, (response) => {
       commit('SET_STATUS', response);
     });
   },

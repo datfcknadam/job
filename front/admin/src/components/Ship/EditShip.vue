@@ -71,6 +71,12 @@ import { mapState, mapMutations } from 'vuex';
 
 export default {
   name: 'AddNewShip',
+  props: {
+    _id: {
+      type: String,
+      default: () => '',
+    },
+  },
   data() {
     return {
       dialog: false,
@@ -83,12 +89,6 @@ export default {
       avatar: {},
       gallery: [],
     };
-  },
-  props: {
-    _id: {
-      type: String,
-      default: () => '',
-    },
   },
   methods: {
     ...mapMutations([
@@ -116,7 +116,7 @@ export default {
         this.$store.dispatch('editShip')
           .then(() => {
             this.dialog = false;
-            setTimeout(this.$store.dispatch('getShips'), 2000);
+            setTimeout(this.$store.dispatch('getShip'), 2000);
           });
       }
     },

@@ -13,18 +13,19 @@ const options = {
 
 const mConn = () => mongoose.connect(url, options);
 const create = (model, data, handler) => {
-  mConn();
+  mConn().then(() => {
     model.create(data, function(err) {
-      mongoose.disconnect()
+      mongoose.disconnect();
       console.log(err);
       if(!err) return handler.json(200);
       else handler.json(500);
     })
+  })
 };
 const read = (model, handler, data) => {
   mConn().then(() => {
     model.find(data, function(err, res) {
-      mongoose.disconnect()
+      mongoose.disconnect();
       handler.json(res);
   });
   }).catch((err) => console.log(err))
@@ -41,7 +42,7 @@ const update = (model, handler, {_id, data}) => {
   console.log(data);
   mConn().then(() => {
     model.updateOne({_id: _id},  data, function(err, res) {
-      mongoose.disconnect()
+      mongoose.disconnect();
       if (err) return handler.json(500);
       return handler.json(200);
     })
@@ -51,7 +52,7 @@ const drop = (model, handler, data) => {
   mConn()
     .then(() => {
       model.remove({_id: data}, function(err, res) {
-        mongoose.disconnect()
+        mongoose.disconnect();
         if (err) return handler.json(500);
         return handler.json(200);
       });

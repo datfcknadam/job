@@ -114,7 +114,7 @@ export default {
             volume,
           }).then(() => {
               this.dialog = false;
-              setTimeout(this.$store.dispatch('getShips'), 1000)
+              setTimeout(this.$store.dispatch('getShip'), 1000)
             });
         }
       }
